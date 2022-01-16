@@ -1,6 +1,10 @@
 # ![https://www.flaticon.com/free-icon/download-circular-button_54993](icon.png) direct-data
 Component for reading/saving data directly into source code.
 
+[![CodeQL](https://github.com/jacklehamster/direct-data/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jacklehamster/direct-data/actions/workflows/codeql-analysis.yml)
+
+[![pages-build-deployment](https://github.com/jacklehamster/direct-data/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/jacklehamster/direct-data/actions/workflows/pages/pages-build-deployment)
+
 ## Setup
 
 ### Directly in web page
