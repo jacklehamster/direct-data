@@ -84,6 +84,8 @@ ServerHandler is used on Node.js side. Attached to an express app, it exposes AP
 
 This gives access to save and load, through the "/data" endpoint.
 ```javascript
+const { ServerHandler } = require('direct-data/src/server-handler.js');
+
 const app = express();
 new ServerHandler(app);
 ```
