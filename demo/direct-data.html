@@ -25,7 +25,9 @@
 	};
 
 
-	const directData = new DirectData(localReader, localWriter, null, 500);
+	const directData = new DirectData({
+		dataReader: localReader, dataWriter: localWriter, saveAfterMillis: 500,
+	});
 	directData.onSave = () => showData(directData);
 
 	async function changeData(field, value) {

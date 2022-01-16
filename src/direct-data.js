@@ -2,14 +2,15 @@ const { DataWriter } = require("./base/data-writer");
 const { DataReader } = require("./base/data-reader");
 
 class DirectData {
-	constructor(dataReader, dataWriter, dataEndPoint, saveAfterMillis) {
+	constructor(parameters) {
+		const { fileUtils, dataReader, dataWriter, dataEndPoint, saveAfterMillis, onSave } = parameters || {};
 		this.dataStore = {};
 		this.pendingSave = new Set();
 		this.dataEndPoint = dataEndPoint || "/data";
 		this.dataWriter = dataWriter || new DataWriter(this.dataEndPoint);
-		this.dataReader = dataReader || new DataReader(null, this.dataEndPoint);
+		this.dataReader = dataReader || new DataReader(fileUtils, this.dataEndPoint);
 		this.saveAfterMillis = saveAfterMillis || 3000;
-		this.onSave = null;
+		this.onSave = onSave;
 	}
 
 	async getData(path) {
@@ -36,12 +37,11 @@ class DirectData {
 		if (!canWrite) {
 			return;
 		}
-		this.save().then(response => {
-			console.info(`Save performed. response: ${response}`);
-			if (this.onSave) {
-				this.onSave();
-			}
-		});
+		const response = await this.save();
+		console.info(`Save performed. response: ${response}`);
+		if (this.onSave) {
+			this.onSave();
+		}
 	}
 
 	async save() {

@@ -26,17 +26,18 @@ MockXhr.onSend = (xhr) => {
 describe('DirectData', function() {
   it('should save data', function(done) {
   	const fileUtils = new FileUtils(MockXhr);
-  	const directData = new DirectData(
-        new DataReader(fileUtils, "/test"),
-        {
+  	const directData = new DirectData({
+        fileUtils,
+        dataWriter: {
           write: async body => {
             expect(body.db1.test).to.equal(123);
             return '{"success": true}';
           },
         },
-        "/test", 10);
-
-    directData.onSave = () => done();
+        dataEndPoint: "/test",
+        saveAfterMillis: 10,
+        onSave: () => done(),
+      });
 
     directData.getData("db1").then(data1 => {
       data1.test = 123;
