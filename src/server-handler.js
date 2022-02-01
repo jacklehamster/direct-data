@@ -5,14 +5,15 @@ const { dirname } = require('path');
 const appDir = dirname(require.main.filename);
 
 class ServerHandler {
-	constructor(app, readOnly, path) {
+	constructor(app, readOnly, path, serverPath) {
+		const sPath = serverPath || "";
 		const dataPath = path || `${appDir}/public/data`;
 		const canWrite = readOnly ? 0 : 1;
-		app.get('/data/can-write.json', (req, res, next) => {
+		app.get(sPath + '/data/can-write.json', (req, res, next) => {
 			res.json(canWrite);
 		});
 
-		app.get('/data', (req, res, next) => {
+		app.get(sPath + '/data', (req, res, next) => {
 			const { path } = req.query || {};
 			const folder = dataPath;
 
@@ -57,11 +58,11 @@ class ServerHandler {
 				return {success: true, updates: Object.keys(data).length};
 			}
 
-			app.post('/data', bodyParser.json(), (req, res, next) => {
+			app.post(sPath + '/data', bodyParser.json(), (req, res, next) => {
 				res.json(performWrite(req.body));
 			});
 
-			app.get('/set-data', (req, res, next) => {
+			app.get(sPath + '/set-data', (req, res, next) => {
 				res.json(performWrite(req.query));
 			});
 		}

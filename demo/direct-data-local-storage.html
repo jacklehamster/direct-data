@@ -2,7 +2,7 @@
 
 <script id="code-javascript">
 	async function showData(directData){
-		const data = await directData.getData("local/test-data.json");
+		const data = await directData.getData("local");
 		document.getElementById("output").textContent = JSON.stringify(data, null, "  ");
 		document.getElementById("field1").value = data.field1 || "";
 		document.getElementById("field2").value = data.field2 || "";
@@ -12,16 +12,31 @@
 		showData(directData);
 	});
 
-	const directData = new DirectData({saveAfterMillis: 500});
+	const localReader = {
+		canWrite: () => 1,
+		read: path => JSON.parse(localStorage.getItem(path) || "{}"),
+	};
+	const localWriter = {
+		write: data => {
+			for (let path in data) {
+				localStorage.setItem(path, JSON.stringify(data[path]));
+			}
+		},
+	};
+
+
+	const directData = new DirectData({
+		dataReader: localReader, dataWriter: localWriter, saveAfterMillis: 500,
+	});
 	directData.onSave = () => showData(directData);
 
 	async function changeData(field, value) {
-		(await directData.getData("local/test-data.json"))[field] = value;
-		directData.didChange("local/test-data.json");
+		(await directData.getData("local"))[field] = value;
+		directData.didChange("local");
 	}
 </script>
 <hr>
-DirectData is used for reading and saving data. This demo writes directly into "demo\data\local\test-data.json"
+DirectData is used for reading and saving data. This demo writes into localStorage.
 <hr>
 Code:
 <pre id="code" style="border: 1px solid black; padding: 5px; background-color: #FFFFcc"></pre>

@@ -15,7 +15,7 @@ app.get('/', (req, res, next) => {
 	});
 });
 
-new ServerHandler(app);
+new ServerHandler(app, false, "demo/data", "/demo");
 
 app.use(serve(`${__dirname}`));
 

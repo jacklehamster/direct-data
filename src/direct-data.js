@@ -6,7 +6,7 @@ class DirectData {
 		const { fileUtils, dataReader, dataWriter, dataEndPoint, saveAfterMillis, onSave } = parameters || {};
 		this.dataStore = {};
 		this.pendingSave = new Set();
-		this.dataEndPoint = dataEndPoint || "/data";
+		this.dataEndPoint = dataEndPoint || "data";
 		this.dataWriter = dataWriter || new DataWriter(this.dataEndPoint);
 		this.dataReader = dataReader || new DataReader(fileUtils, this.dataEndPoint);
 		this.saveAfterMillis = saveAfterMillis || 3000;

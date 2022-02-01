@@ -191,11 +191,11 @@ module.exports = {
 },{"dok-file-utils":3}],5:[function(require,module,exports){
 class DataWriter {
 	constructor(dataEndPoint) {
-		this.dataEndPoint = dataEndPoint || "/data";
+		this.dataEndPoint = dataEndPoint || "data";
 	}
 
 	async write(data) {
-		const response = await fetch("/data", {
+		const response = await fetch(this.dataEndPoint, {
 		    method: 'POST',
 		    cache: 'no-cache',
 		    headers: {
@@ -220,7 +220,7 @@ class DirectData {
 		const { fileUtils, dataReader, dataWriter, dataEndPoint, saveAfterMillis, onSave } = parameters || {};
 		this.dataStore = {};
 		this.pendingSave = new Set();
-		this.dataEndPoint = dataEndPoint || "/data";
+		this.dataEndPoint = dataEndPoint || "data";
 		this.dataWriter = dataWriter || new DataWriter(this.dataEndPoint);
 		this.dataReader = dataReader || new DataReader(fileUtils, this.dataEndPoint);
 		this.saveAfterMillis = saveAfterMillis || 3000;
