@@ -2,7 +2,7 @@ const { FileUtils } = require("dok-file-utils");
 
 class DataReader {
 	constructor(fileUtils, dataEndPoint) {
-		this.dataEndPoint = dataEndPoint || "/data";
+		this.dataEndPoint = dataEndPoint || "data";
 		this.fileUtils = fileUtils || new FileUtils();
 	}
 
