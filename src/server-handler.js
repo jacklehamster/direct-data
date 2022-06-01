@@ -16,18 +16,18 @@ class ServerHandler {
 		});
 
 		if (canWrite) {
-			if (!fs.existsSync(dirname(`${appDir}/${dataPath}`))) {
-				fs.mkdirSync(dirname(`${appDir}/${dataPath}`));
+			if (!fs.existsSync(dirname(`${dataPath}`))) {
+				fs.mkdirSync(dirname(`${dataPath}`));
 			}
 		}
 
 		function performWrite(data) {
 			for (let p in data) {
-				if (!fs.existsSync(dirname(`${appDir}/${dataPath}/${p}`))) {
-					fs.mkdirSync(dirname(`${appDir}/${dataPath}/${p}`));
+				if (!fs.existsSync(dirname(`${dataPath}/${p}`))) {
+					fs.mkdirSync(dirname(`${dataPath}/${p}`));
 				}
 
-				fs.writeFileSync(`${appDir}/${dataPath}/${p}`, stringify(data[p], null, "  "));
+				fs.writeFileSync(`${dataPath}/${p}`, stringify(data[p], null, "  "));
 			}
 			return { success: true, updates: Object.keys(data).length };
 		}
