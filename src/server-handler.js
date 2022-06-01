@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const { dirname } = require('path');
 const appRoot = require('app-root-path');
 
-const appDir = appRoot;
+const appDir = appRoot.path;
 
 class ServerHandler {
 	constructor(app, readOnly, path, serverPath) {
@@ -16,7 +16,6 @@ class ServerHandler {
 		});
 
 		if (canWrite) {
-			console.log(appDir, dataPath, path);
 			if (!fs.existsSync(dirname(`${appDir}/${dataPath}/${path}`))) {
 				fs.mkdirSync(dirname(`${appDir}/${dataPath}/${path}`));
 			}
