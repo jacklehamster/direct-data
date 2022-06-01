@@ -1,4 +1,4 @@
-const fs 		= require('fs');
+const fs = require('fs');
 const stringify = require("json-stringify-pretty-compact");
 const bodyParser = require('body-parser');
 const { dirname } = require('path');
@@ -12,6 +12,21 @@ class ServerHandler {
 		app.get(sPath + '/data/can-write.json', (req, res, next) => {
 			res.json(canWrite);
 		});
+
+		if (!fs.existsSync(dirname(`${appDir}/${dataPath}/${path}`))) {
+			fs.mkdirSync(dirname(`${appDir}/${dataPath}/${path}`));
+		}
+
+		function performWrite(data) {
+			for (let path in data) {
+				if (!fs.existsSync(dirname(`${appDir}/${dataPath}/${path}`))) {
+					fs.mkdirSync(dirname(`${appDir}/${dataPath}/${path}`));
+				}
+
+				fs.writeFileSync(`${appDir}/${dataPath}/${path}`, stringify(data[path], null, "  "));
+			}
+			return { success: true, updates: Object.keys(data).length };
+		}
 
 		app.get(sPath + '/data', (req, res, next) => {
 			const { path } = req.query || {};
@@ -47,17 +62,6 @@ class ServerHandler {
 		});
 
 		if (canWrite) {
-			function performWrite(data) {
-			    for (let path in data) {
-			    	if (!fs.existsSync(dirname(`${dataPath}/${path}`))) {
-					    fs.mkdirSync(dirname(`${dataPath}/${path}`));
-					}
-
-			    	fs.writeFileSync(`${dataPath}/${path}`, stringify(data[path], null, "  "));
-			    }
-				return {success: true, updates: Object.keys(data).length};
-			}
-
 			app.post(sPath + '/data', bodyParser.json(), (req, res, next) => {
 				res.json(performWrite(req.body));
 			});
