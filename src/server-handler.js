@@ -2,7 +2,13 @@ const fs = require('fs');
 const stringify = require("json-stringify-pretty-compact");
 const bodyParser = require('body-parser');
 const { dirname } = require('path');
-const appDir = dirname(require.main.filename);
+const appRoot = require('app-root-path');
+
+console.log(appRoot);
+console.log(require.main.filename);
+
+const appDir = appRoot;
+
 
 class ServerHandler {
 	constructor(app, readOnly, path, serverPath) {
@@ -13,8 +19,10 @@ class ServerHandler {
 			res.json(canWrite);
 		});
 
-		if (!fs.existsSync(dirname(`${appDir}/${dataPath}/${path}`))) {
-			fs.mkdirSync(dirname(`${appDir}/${dataPath}/${path}`));
+		if (canWrite) {
+			if (!fs.existsSync(dirname(`${appDir}/${dataPath}/${path}`))) {
+				fs.mkdirSync(dirname(`${appDir}/${dataPath}/${path}`));
+			}
 		}
 
 		function performWrite(data) {
